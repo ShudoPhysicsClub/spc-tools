@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.28 49.13">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #231815;
+        stroke-width: .75px;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke: #231815;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke-width: .65px;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_2" data-name="レイヤー 2">
+    <circle class="cls-3" cx="23.99" cy="24.34" r="22.5"/>
+  </g>
+  <g id="_レイヤー_1" data-name="レイヤー 1">
+    <ellipse class="cls-2" cx="23.99" cy="24.34" rx="7.4" ry="19.65"/>
+    <circle class="cls-1" cx="23.99" cy="24.34" r="2.5"/>
+    <circle class="cls-1" cx="29.37" cy="37.86" r="1.5"/>
+    <ellipse class="cls-2" cx="23.99" cy="24.34" rx="19.65" ry="7.4" transform="translate(-8.95 15.25) rotate(-30)"/>
+    <circle class="cls-1" cx="33.01" cy="12.91" r="1.5"/>
+    <ellipse class="cls-2" cx="23.99" cy="24.34" rx="7.4" ry="19.65" transform="translate(-9.08 32.94) rotate(-60)"/>
+    <circle class="cls-1" cx="9.58" cy="22.24" r="1.5"/>
+  </g>
+</svg>
