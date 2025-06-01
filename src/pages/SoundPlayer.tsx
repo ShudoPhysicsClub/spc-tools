@@ -27,9 +27,9 @@ const SoundPlayer = () => {
     <>
       <div className="flex flex-col items-center justify-center">
         <Header text={"簡易 音声ファイル プレイヤー"} showHome />
-        <div className="p-[2dvh] border-black border-[2px] rounded-[2dvh] cursor-pointer">
+        <div className="">
           <input
-            className="cursor-pointer"
+            className="file:cursor-pointer file:p-[2dvh] file:border-black file:border-[2px] file:rounded-[2dvh]"
             type="file"
             name="music_file"
             id="music_file"
@@ -41,6 +41,7 @@ const SoundPlayer = () => {
             }}
           />
         </div>
+        <p>{"↑ここをクリックしてファイルを読み込んでください"}</p>
         <div className="w-[80%] mx-[3dvh] my-[3dvh]">
           <AudioPlayer
             ref={playerRef}
