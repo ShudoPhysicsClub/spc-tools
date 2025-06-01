@@ -20,6 +20,11 @@ const Index = () => {
             onClick={() => navigate("/random")}
             text={"乱数メーカー"}
           />
+          <Button
+            className="text-2xl m-[5px] border-black border-[1px] cursor-pointer"
+            onClick={() => navigate("/color-converter")}
+            text={"カラーコンバーター"}
+          />
         </div>
       </div>
     </>
