@@ -3,6 +3,7 @@ import Index from "./pages/Index";
 import SoundPlayer from "./pages/SoundPlayer";
 import Random from "./pages/Random";
 import ColorConverter from "./pages/ColorConverter";
+import MorseChallenge from "./pages/MorseChallenge";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/sound-player" element={<SoundPlayer />} />
           <Route path="/random" element={<Random />} />
           <Route path="/color-converter" element={<ColorConverter />} />
+          <Route path="/morse-challenge" element={<MorseChallenge />} />
         </Routes>
       </BrowserRouter>
     </>
