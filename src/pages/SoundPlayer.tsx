@@ -12,6 +12,8 @@ const SoundPlayer = () => {
   const playerRef = useRef<any>(null); // AudioPlayerのref
   const [currentSpeed, setCurrentSpeed] = useState<number>(1);
 
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
   const onDropFile = (file: File) => {
     if (file.type.substring(0, 5) !== "audio") {
       alert("音声ファイルでないものはアップロードできません！");
@@ -20,6 +22,7 @@ const SoundPlayer = () => {
       fileReader.onload = () => {
         const imageSrc: string = fileReader.result as string;
         setAudioUrl(imageSrc);
+        setFile(file);
       };
       fileReader.readAsDataURL(file);
     }
@@ -43,7 +46,8 @@ const SoundPlayer = () => {
         <Header text={"簡易 音声ファイル プレイヤー"} showHome />
         <div className="">
           <input
-            className="file:cursor-pointer file:p-[2dvh] file:border-black file:border-[2px] file:rounded-[2dvh]"
+            ref={inputFileRef}
+            className="hidden file:cursor-pointer file:p-[2dvh] file:border-black file:border-[2px] file:rounded-[2dvh]"
             type="file"
             name="music_file"
             id="music_file"
@@ -54,11 +58,26 @@ const SoundPlayer = () => {
               }
             }}
           />
+          <button
+            className="cursor-pointer border-[1px] border-black rounded-2xl px-[30px] py-[20px] hover:bg-gray-100"
+            onClick={() => {
+              inputFileRef.current?.click();
+            }}
+          >
+            {"ここを押してファイルを読み込む"}
+          </button>
         </div>
-        <p>{"↑ここをクリックしてファイルを読み込んでください"}</p>
+        <p className="p-[10px]">{"または"}</p>
         <DropSoundZone onDropFile={onDropFile}>
-          <div></div>
+          <p className="m-[10px] cursor-default">
+            {"ここにファイルをドロップしてください。"}
+          </p>
         </DropSoundZone>
+
+        <div className="m-[10px] flex flex-col items-center justify-center">
+          <p>{"読込中のファイル"}</p>
+          <p>{file ? file.name : "読み込んでいません"}</p>
+        </div>
 
         <div className="w-[80%] mx-[3dvh] my-[3dvh]">
           <AudioPlayer
