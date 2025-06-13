@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+* {
+  font-family:
+    Inter,
+    Noto Sans JP,
+    sans-serif;
+  user-select: none;
+  word-break: auto-phrase;
+}
