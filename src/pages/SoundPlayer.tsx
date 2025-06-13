@@ -3,6 +3,7 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import Button from "../components/Button";
 import Header from "../components/Header";
+import DropSoundZone from "../components/DropSoundZone";
 
 const SoundPlayer = () => {
   const [file, setFile] = useState<File>();
@@ -10,6 +11,19 @@ const SoundPlayer = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null); // AudioPlayerのref
   const [currentSpeed, setCurrentSpeed] = useState<number>(1);
+
+  const onDropFile = (file: File) => {
+    if (file.type.substring(0, 5) !== "audio") {
+      alert("音声ファイルでないものはアップロードできません！");
+    } else {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        const imageSrc: string = fileReader.result as string;
+        setAudioUrl(imageSrc);
+      };
+      fileReader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     if (file) {
@@ -42,6 +56,10 @@ const SoundPlayer = () => {
           />
         </div>
         <p>{"↑ここをクリックしてファイルを読み込んでください"}</p>
+        <DropSoundZone onDropFile={onDropFile}>
+          <div></div>
+        </DropSoundZone>
+
         <div className="w-[80%] mx-[3dvh] my-[3dvh]">
           <AudioPlayer
             ref={playerRef}
