@@ -30,6 +30,11 @@ const Index = () => {
             onClick={() => navigate("/morse-challenge")}
             text={"モールス チャレンジ"}
           />
+          <Button
+            className="text-2xl m-[5px] border-black border-[1px] cursor-pointer"
+            onClick={() => navigate("/markdown")}
+            text={"マークダウンエディタ"}
+          />
         </div>
       </div>
     </>
