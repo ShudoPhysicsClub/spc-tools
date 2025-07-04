@@ -124,8 +124,6 @@ const SoundPlayer = () => {
             }}
           />
         </div>
-
-        <p>{"Copyright 2025 ShudoPhysicsClub"}</p>
       </div>
     </>
   );
