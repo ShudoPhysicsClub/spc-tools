@@ -16,7 +16,7 @@ const Markdown = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <Header text={"マークダウンエディタ"} showHome />
+        <Header text={"マークダウンエディタ"} author={"砂田翔太"} showHome />
         <p>
           {
             "物理班の記事や作品紹介で使用されているマークダウンの方式で、マークダウンを編集できます。"

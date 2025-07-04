@@ -43,7 +43,7 @@ const SoundPlayer = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <Header text={"簡易 音声ファイル プレイヤー"} showHome />
+        <Header text={"簡易 音声ファイル プレイヤー"} author="砂田翔太" showHome />
         <div className="">
           <input
             ref={inputFileRef}

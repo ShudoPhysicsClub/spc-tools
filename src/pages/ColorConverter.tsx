@@ -102,7 +102,7 @@ const ColorConverter = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-[16px]">
-      <Header text="カラーコンバーター" showHome />
+      <Header text="カラーコンバーター" author={"tau34"} showHome />
 
       <div className="m-[6px] flex items-center">
         <label className="mr-[5px]" htmlFor="hex">HEX:</label>

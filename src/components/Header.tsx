@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const Header = (props: { text: string; showHome: boolean }) => {
+const Header = (props: { text: string; author: string; showHome: boolean }) => {
   const navigate = useNavigate();
 
   return (
@@ -17,6 +17,10 @@ const Header = (props: { text: string; showHome: boolean }) => {
           <></>
         )}
         <p className="text-3xl mb-[3dvh]">{props.text}</p>
+        <p className="text-xl ml-[10px] mb-[3dvh]">
+          {"作成者: "}
+          {props.author}
+        </p>
       </div>
     </>
   );

@@ -100,7 +100,7 @@ const MorseChallenge = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <Header text={"モールス チャレンジ"} showHome />
+        <Header text={"モールス チャレンジ"} author={"砂田翔太"} showHome />
         <p>
           {
             "「モールス チャレンジ」は、モールス信号を覚える楽しいゲームです。\n設定に基づいて、10個の問題をランダムに出題します。"

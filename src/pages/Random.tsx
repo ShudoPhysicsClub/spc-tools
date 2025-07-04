@@ -11,7 +11,7 @@ const Random = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <Header text={"乱数メーカー"} showHome />
+        <Header text={"乱数メーカー"} author={"砂田翔太"} showHome />
         <div className="flex flex-row m-[3px]">
           <label className="m-[5px]" htmlFor="min">
             {"最小値"}
