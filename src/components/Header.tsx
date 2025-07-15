@@ -17,10 +17,10 @@ const Header = (props: { text: string; author: string; showHome: boolean }) => {
           <></>
         )}
         <p className="text-3xl mb-[3dvh]">{props.text}</p>
-        <p className="text-xl ml-[10px] mb-[3dvh] flex items-center justify-center">
+        {/* <p className="text-xl ml-[10px] mb-[3dvh] flex items-center justify-center">
           {"作成者: "}
           {props.author}
-        </p>
+        </p> */}
       </div>
     </>
   );
