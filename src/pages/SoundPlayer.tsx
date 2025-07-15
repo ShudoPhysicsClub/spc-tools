@@ -69,7 +69,7 @@ const SoundPlayer = () => {
         </div>
         <p className="p-[10px]">{"または"}</p>
         <DropSoundZone onDropFile={onDropFile}>
-          <p className="m-[10px] cursor-default">
+          <p className="mx-[5dvw] my-[5dvh] cursor-default">
             {"ここにファイルをドロップしてください。"}
           </p>
         </DropSoundZone>
