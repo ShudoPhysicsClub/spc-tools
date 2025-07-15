@@ -68,19 +68,21 @@ const SoundPlayer = () => {
                 }
               }}
             />
-            <p className="cursor-pointer px-[5dvw] pt-[5dvh]">
+            <p className="cursor-pointer px-[7dvw] pt-[5dvh]">
               {"ここを押してファイルを読み込む"}{" "}
             </p>
             <p className="p-[10px]">{"または"}</p>
-            <p className="mx-[5dvw] mb-[5dvh]">
-              {"ここにファイルをドロップしてください。"}
+            <p className="mx-[7dvw] mb-[5dvh]">
+              {"ここにファイルをドロップして読み込む"}
             </p>
           </DropSoundZone>
         </div>
 
         <div className="m-[10px] flex flex-col items-center justify-center">
-          <p>{"読込中のファイル"}</p>
-          <p>{file ? file.name : "読み込んでいません"}</p>
+          <p className="text-xl">{"【読込中のファイル】"}</p>
+          <p className="text-xl">
+            {file ? file.name : "☠️読み込んでいません☠️"}
+          </p>
         </div>
 
         <div className="w-[80%] mx-[3dvh] my-[3dvh]">
