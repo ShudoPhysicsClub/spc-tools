@@ -8,7 +8,11 @@ const Index = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <Header text={"物理班ツール置き場"} author={"物理班"} showHome={false} />
+        <Header
+          text={"物理班ツール置き場"}
+          author={"物理班"}
+          showHome={false}
+        />
         <div className="m-[5px]">
           <Button
             className="text-2xl m-[5px] border-black border-[1px] cursor-pointer"

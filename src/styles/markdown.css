@@ -89,11 +89,11 @@
 }
 
 .markdown ul .task-list-item::marker {
-  content: '';
+  content: "";
 }
 
 .markdown ul li::marker {
-  content: '・  ';
+  content: "・  ";
   color: #6a737d;
 }
 

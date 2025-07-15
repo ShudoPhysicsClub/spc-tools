@@ -69,7 +69,7 @@ const MorseChallenge = () => {
     // 正解
     const indexes = genRandomNumbers(
       def_mode == 0 ? 26 : def_mode == 1 ? 10 : 36,
-      numQuestions
+      numQuestions,
     );
     const array: MorseData[] = [];
     const array2: MorseData[][] = [];
@@ -80,7 +80,7 @@ const MorseChallenge = () => {
       // 選択肢
       const indexes2 = genRandomNumbers(
         def_mode == 0 ? 26 : def_mode == 1 ? 10 : 36,
-        3
+        3,
       );
       const temp_data = [data];
       for (let j = 0; j < indexes2.length; j++) {

@@ -78,7 +78,7 @@ export interface MorseData {
 
 export const getMorseData = (mode: number, index: number) => {
   const temp = charToMorse.find(
-    (x) => x.str === availableCharacters[mode][index]
+    (x) => x.str === availableCharacters[mode][index],
   );
   if (temp) {
     return temp;

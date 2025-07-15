@@ -5,9 +5,13 @@ const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
   const cleaned = hex.replace(/^#/, "");
   if (!/^([0-9A-Fa-f]{3}){1,2}$/.test(cleaned)) return null;
 
-  const fullHex = cleaned.length === 3
-    ? cleaned.split("").map((c) => c + c).join("")
-    : cleaned;
+  const fullHex =
+    cleaned.length === 3
+      ? cleaned
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : cleaned;
 
   const bigint = parseInt(fullHex, 16);
   return {
@@ -27,32 +31,53 @@ const rgbToHex = (r: number, g: number, b: number): string => {
   );
 };
 
-const rgbToHsl = (r: number, g: number, b: number): { h: number; s: number; l: number } => {
-  r /= 255; g /= 255; b /= 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+const rgbToHsl = (
+  r: number,
+  g: number,
+  b: number,
+): { h: number; s: number; l: number } => {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b);
   const l = (max + min) / 2;
 
-  let h = 0, s = 0;
+  let h = 0,
+    s = 0;
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)); break;
-      case g: h = ((b - r) / d + 2); break;
-      case b: h = ((r - g) / d + 4); break;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
     }
     h *= 60;
   }
   return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
 };
 
-const hslToRgb = (h: number, s: number, l: number): { r: number; g: number; b: number } => {
-  s /= 100; l /= 100;
+const hslToRgb = (
+  h: number,
+  s: number,
+  l: number,
+): { r: number; g: number; b: number } => {
+  s /= 100;
+  l /= 100;
   const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = l - c / 2;
 
-  let r = 0, g = 0, b = 0;
+  let r = 0,
+    g = 0,
+    b = 0;
   if (0 <= h && h < 60) [r, g, b] = [c, x, 0];
   else if (h < 120) [r, g, b] = [x, c, 0];
   else if (h < 180) [r, g, b] = [0, c, x];
@@ -71,7 +96,9 @@ const ColorConverter = () => {
   const [hex, setHex] = useState("#ffffff");
   const [rgb, setRgb] = useState({ r: 255, g: 255, b: 255 });
   const [hsl, setHsl] = useState({ h: 0, s: 0, l: 100 });
-  const [lastChanged, setLastChanged] = useState<"hex" | "rgb" | "hsl" | null>(null);
+  const [lastChanged, setLastChanged] = useState<"hex" | "rgb" | "hsl" | null>(
+    null,
+  );
 
   useEffect(() => {
     if (lastChanged === "hex") {
@@ -98,14 +125,16 @@ const ColorConverter = () => {
     }
   }, [hsl]);
 
-  const safeNum = (val: number) => isNaN(val) ? 0 : val;
+  const safeNum = (val: number) => (isNaN(val) ? 0 : val);
 
   return (
     <div className="flex flex-col items-center justify-center p-[16px]">
       <Header text="カラーコンバーター" author={"tau34"} showHome />
 
       <div className="m-[6px] flex items-center">
-        <label className="mr-[5px]" htmlFor="hex">HEX:</label>
+        <label className="mr-[5px]" htmlFor="hex">
+          HEX:
+        </label>
         <input
           id="hex"
           type="text"
@@ -130,7 +159,7 @@ const ColorConverter = () => {
             onChange={(e) => {
               setRgb((prev) => ({
                 ...prev,
-                [key]: safeNum(e.target.valueAsNumber)
+                [key]: safeNum(e.target.valueAsNumber),
               }));
               setLastChanged("rgb");
             }}
@@ -151,7 +180,7 @@ const ColorConverter = () => {
             onChange={(e) => {
               setHsl((prev) => ({
                 ...prev,
-                [key]: safeNum(e.target.valueAsNumber)
+                [key]: safeNum(e.target.valueAsNumber),
               }));
               setLastChanged("hsl");
             }}
