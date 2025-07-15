@@ -43,7 +43,11 @@ const SoundPlayer = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <Header text={"簡易 音声ファイル プレイヤー"} author="砂田翔太" showHome />
+        <Header
+          text={"簡易 音声ファイル プレイヤー"}
+          author="砂田翔太"
+          showHome
+        />
         <div className="">
           <input
             ref={inputFileRef}
@@ -120,6 +124,17 @@ const SoundPlayer = () => {
               if (playerRef.current?.audio?.current) {
                 playerRef.current.audio.current.playbackRate = 1.5;
                 setCurrentSpeed(1.5);
+              }
+            }}
+          />
+        </div>
+        <div className="flex flex-row">
+          <Button
+            text={"再生位置を最初に戻す"}
+            onClick={() => {
+              if (playerRef.current?.audio?.current) {
+                playerRef.current.audio.current.pause();
+                playerRef.current.audio.current.currentTime = 0;
               }
             }}
           />
