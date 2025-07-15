@@ -39,7 +39,7 @@ const DropSoundZone = (props: Props) => {
       onDragLeave={onDragLeave}
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
-      className={"border-2 border-dashed border-gray-400 rounded-lg p-4 " + (isDragActive ? "bg-gray-200" : "bg-white") + " flex flex-col items-center justify-center"}
+      className={"hover:bg-gray-100 border-2 border-dashed border-gray-400 rounded-lg p-4 " + (isDragActive ? "bg-gray-200" : "bg-white") + " flex flex-col items-center justify-center"}
     >
       {props.children}
     </div>

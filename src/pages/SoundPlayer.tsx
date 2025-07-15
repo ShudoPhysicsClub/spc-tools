@@ -48,35 +48,35 @@ const SoundPlayer = () => {
           author="砂田翔太"
           showHome
         />
-        <div className="">
-          <input
-            ref={inputFileRef}
-            className="hidden file:cursor-pointer file:p-[2dvh] file:border-black file:border-[2px] file:rounded-[2dvh]"
-            type="file"
-            name="music_file"
-            id="music_file"
-            accept="audio/*"
-            onChange={(e) => {
-              if (e.target.files) {
-                setFile(e.target.files[0]);
-              }
-            }}
-          />
-          <button
-            className="cursor-pointer border-[1px] border-black rounded-2xl px-[30px] py-[20px] hover:bg-gray-100"
-            onClick={() => {
-              inputFileRef.current?.click();
-            }}
-          >
-            {"ここを押してファイルを読み込む"}
-          </button>
+        <div
+          className="hover:bg-gray-100 cursor-pointer"
+          onClick={() => {
+            inputFileRef.current?.click();
+          }}
+        >
+          <DropSoundZone onDropFile={onDropFile}>
+            <input
+              ref={inputFileRef}
+              className="hidden file:cursor-pointer file:p-[2dvh] file:border-black file:border-[2px] file:rounded-[2dvh]"
+              type="file"
+              name="music_file"
+              id="music_file"
+              accept="audio/*"
+              onChange={(e) => {
+                if (e.target.files) {
+                  setFile(e.target.files[0]);
+                }
+              }}
+            />
+            <p className="cursor-pointer px-[5dvw] pt-[5dvh]">
+              {"ここを押してファイルを読み込む"}{" "}
+            </p>
+            <p className="p-[10px]">{"または"}</p>
+            <p className="mx-[5dvw] mb-[5dvh]">
+              {"ここにファイルをドロップしてください。"}
+            </p>
+          </DropSoundZone>
         </div>
-        <p className="p-[10px]">{"または"}</p>
-        <DropSoundZone onDropFile={onDropFile}>
-          <p className="mx-[5dvw] my-[5dvh] cursor-default">
-            {"ここにファイルをドロップしてください。"}
-          </p>
-        </DropSoundZone>
 
         <div className="m-[10px] flex flex-col items-center justify-center">
           <p>{"読込中のファイル"}</p>
