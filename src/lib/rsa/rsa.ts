@@ -1440,13 +1440,129 @@ function isinmu(isinmu: boolean): void {
 // ============================================================
 // メイン関数
 // ============================================================
+// rsa.tsのmain関数内の修正（トースト通知機能を追加）
+
+// ============================================================
+// トースト通知機能
+// ============================================================
+
+function showToast(message: string, type: 'success' | 'error' | 'info' = 'success'): void {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  
+  const colors = {
+    success: '#4CAF50',
+    error: '#f44336',
+    info: '#2196F3'
+  };
+  
+  Object.assign(toast.style, {
+    position: 'fixed',
+    top: '20px',
+    right: '20px',
+    backgroundColor: colors[type],
+    color: '#fff',
+    padding: '16px 24px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+    zIndex: '10000',
+    fontSize: '14px',
+    fontWeight: '500',
+    minWidth: '200px',
+    maxWidth: '400px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '12px',
+    animation: 'slideIn 0.3s ease-out',
+    fontFamily: 'Arial, sans-serif',
+  });
+
+  // ×ボタンを追加
+  const closeBtn = document.createElement('button');
+  closeBtn.textContent = '×';
+  Object.assign(closeBtn.style, {
+    background: 'none',
+    border: 'none',
+    color: '#fff',
+    fontSize: '20px',
+    cursor: 'pointer',
+    padding: '0',
+    marginLeft: '8px',
+    width: '20px',
+    height: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: '0.8',
+  });
+  
+  closeBtn.onmouseover = () => {
+    closeBtn.style.opacity = '1';
+  };
+  closeBtn.onmouseout = () => {
+    closeBtn.style.opacity = '0.8';
+  };
+
+  const removeToast = () => {
+    toast.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  };
+
+  closeBtn.onclick = removeToast;
+  toast.appendChild(closeBtn);
+
+  // アニメーションのスタイルを追加
+  if (!document.getElementById('toast-animations')) {
+    const style = document.createElement('style');
+    style.id = 'toast-animations';
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  document.body.appendChild(toast);
+
+  // 3秒後に自動で消える
+  setTimeout(removeToast, 3000);
+}
+
 // ============================================================
 // メイン関数
 // ============================================================
 
 export async function main(): Promise<void> {
-    const existingApps = document.querySelectorAll('#rsa-app');
-  existingApps.forEach(app => app.remove());
+  // 既存のRSAアプリを削除（二重実行防止）
+  const existingApp = document.getElementById('rsa-app');
+  if (existingApp) {
+    console.log('既存のRSAアプリが検出されました。スキップします。');
+    return;
+  }
+
   // スタイルのリセット
   document.body.style.margin = '0';
   document.body.style.padding = '0';
@@ -1472,6 +1588,7 @@ export async function main(): Promise<void> {
   document.body.appendChild(bgDiv);
 
   const mainContainer = document.createElement('div');
+  mainContainer.id = 'rsa-app'; // IDを追加
   Object.assign(mainContainer.style, {
     maxWidth: '800px',
     margin: '20px auto',
@@ -1569,6 +1686,7 @@ export async function main(): Promise<void> {
     );
   } catch (e) {
     console.error('初期化エラー:', e);
+    showToast('初期化に失敗しました', 'error');
   }
 
   let parsedKeysa: PrivateKeyData | null = null;
@@ -1614,7 +1732,7 @@ export async function main(): Promise<void> {
     genBtn.textContent = '✨ 新しい鍵ペアを生成してセット';
     genBtn.disabled = false;
     console.timeEnd('keygen');
-    alert('鍵が完成しました');
+    showToast('鍵ペアの生成が完了しました', 'success');
   };
 
   const opSec = createSection('操作 (署名・検証・暗号・復号)');
@@ -1702,7 +1820,7 @@ export async function main(): Promise<void> {
 
   btns.sign.onclick = async (): Promise<void> => {
     if (!parsedKeysa) {
-      alert('秘密鍵が設定されていません。');
+      showToast('秘密鍵が設定されていません', 'error');
       return;
     }
     btns.sign.disabled = true;
@@ -1718,8 +1836,9 @@ export async function main(): Promise<void> {
       );
       console.timeEnd('sign');
       resultArea.textContent = `【署名結果】\n${sig}`;
+      showToast('署名が完了しました', 'success');
     } catch (e) {
-      alert('署名に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+      showToast('署名に失敗しました', 'error');
     } finally {
       btns.sign.disabled = false;
       btns.sign.textContent = '署名する';
@@ -1730,7 +1849,7 @@ export async function main(): Promise<void> {
     const sig = prompt('検証する署名を入力してください:');
     if (!sig) return;
     if (!parsedPubKeys) {
-      alert('公開鍵が設定されていません。');
+      showToast('公開鍵が設定されていません', 'error');
       return;
     }
     btns.verify.disabled = true;
@@ -1747,8 +1866,9 @@ export async function main(): Promise<void> {
       resultArea.textContent = ok
         ? '✅ 検証に成功しました。正当な署名です。'
         : '❌ 検証に失敗しました。不正な署名です。';
+      showToast(ok ? '検証に成功しました' : '検証に失敗しました', ok ? 'success' : 'error');
     } catch (e) {
-      alert('検証に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+      showToast('検証に失敗しました', 'error');
     } finally {
       btns.verify.disabled = false;
       btns.verify.textContent = '検証する';
@@ -1757,7 +1877,7 @@ export async function main(): Promise<void> {
 
   btns.enc.onclick = async (): Promise<void> => {
     if (!parsedPubKeys) {
-      alert('公開鍵が設定されていません。');
+      showToast('公開鍵が設定されていません', 'error');
       return;
     }
     btns.enc.disabled = true;
@@ -1771,8 +1891,9 @@ export async function main(): Promise<void> {
       );
       console.timeEnd('encrypt');
       resultArea.textContent = `【暗号化データ】\n${enc}`;
+      showToast('暗号化が完了しました', 'success');
     } catch (e) {
-      alert('暗号化に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+      showToast('暗号化に失敗しました', 'error');
     } finally {
       btns.enc.disabled = false;
       btns.enc.textContent = '暗号化する';
@@ -1781,7 +1902,7 @@ export async function main(): Promise<void> {
 
   btns.dec.onclick = async (): Promise<void> => {
     if (!parsedKeysa) {
-      alert('秘密鍵が設定されていません。');
+      showToast('秘密鍵が設定されていません', 'error');
       return;
     }
     btns.dec.disabled = true;
@@ -1797,8 +1918,9 @@ export async function main(): Promise<void> {
       );
       console.timeEnd('decrypt');
       resultArea.textContent = `【復号結果】\n${dec}`;
+      showToast('復号が完了しました', 'success');
     } catch (e) {
-      alert('復号に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+      showToast('復号に失敗しました', 'error');
     } finally {
       btns.dec.disabled = false;
       btns.dec.textContent = '復号化する';
@@ -1810,19 +1932,12 @@ export async function main(): Promise<void> {
     if (text) {
       try {
         await navigator.clipboard.writeText(text);
-        const originalText = btns.copy.textContent;
-        const originalBg = btns.copy.style.backgroundColor;
-        btns.copy.textContent = '✅ コピーしました！';
-        btns.copy.style.backgroundColor = '#4CAF50';
-        setTimeout(() => {
-          btns.copy.textContent = originalText;
-          btns.copy.style.backgroundColor = originalBg;
-        }, 2000);
+        showToast('✅ コピーしました', 'success');
       } catch (e) {
-        alert('クリップボードへのコピーに失敗しました。');
+        showToast('コピーに失敗しました', 'error');
       }
     } else {
-      alert('コピーする内容がありません。');
+      showToast('コピーする内容がありません', 'info');
     }
   };
 
@@ -1830,6 +1945,7 @@ export async function main(): Promise<void> {
     if (confirm('入力内容と結果をクリアしますか？')) {
       inputmsg.value = '';
       resultArea.textContent = '';
+      showToast('クリアしました', 'info');
     }
   };
 
@@ -1890,7 +2006,7 @@ export async function main(): Promise<void> {
   }
 
   if (urlParams.get('roop') === 'true') {
-    alert('不正な操作が検出されました。');
+    showToast('不正な操作が検出されました', 'error');
     for (let i = 0; i < 1000; i++) {
       console.log('System loop...');
     }
