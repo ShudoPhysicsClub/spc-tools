@@ -1440,13 +1440,6 @@ function isinmu(isinmu: boolean): void {
 // ============================================================
 // メイン関数
 // ============================================================
-
-// 最後の部分を修正
-
-// ============================================================
-// メイン関数
-// ============================================================
-
 // ============================================================
 // メイン関数
 // ============================================================
@@ -1488,20 +1481,21 @@ export async function main(): Promise<void> {
   function createSection(name: string): HTMLDivElement {
     const sec = document.createElement('div');
     Object.assign(sec.style, {
-      border: '2px solid #333',
+      border: '1px solid #ddd',
       borderRadius: '8px',
       padding: '20px',
       marginBottom: '20px',
       background: '#fff',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
     });
     const h3 = document.createElement('h3');
     h3.textContent = name;
     Object.assign(h3.style, {
       marginTop: '0',
       marginBottom: '15px',
-      fontSize: '20px',
+      fontSize: '18px',
       color: '#333',
+      fontWeight: '600',
     });
     sec.appendChild(h3);
     mainContainer.appendChild(sec);
@@ -1516,17 +1510,17 @@ export async function main(): Promise<void> {
     padding: '10px 20px',
     fontSize: '14px',
     cursor: 'pointer',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
+    backgroundColor: '#fff',
+    color: '#333',
+    border: '1px solid #ddd',
     borderRadius: '4px',
-    fontWeight: 'bold',
+    fontWeight: '500',
   });
   genBtn.onmouseover = () => {
-    genBtn.style.backgroundColor = '#45a049';
+    genBtn.style.backgroundColor = '#f8f8f8';
   };
   genBtn.onmouseout = () => {
-    genBtn.style.backgroundColor = '#4CAF50';
+    genBtn.style.backgroundColor = '#fff';
   };
   keySec.appendChild(genBtn);
 
@@ -1538,9 +1532,10 @@ export async function main(): Promise<void> {
     padding: '10px',
     fontFamily: 'monospace',
     fontSize: '12px',
-    border: '1px solid #ccc',
+    border: '1px solid #ddd',
     borderRadius: '4px',
     resize: 'vertical',
+    backgroundColor: '#fff',
   });
   keySec.appendChild(pemInput);
 
@@ -1553,9 +1548,10 @@ export async function main(): Promise<void> {
     padding: '10px',
     fontFamily: 'monospace',
     fontSize: '12px',
-    border: '1px solid #ccc',
+    border: '1px solid #ddd',
     borderRadius: '4px',
     resize: 'vertical',
+    backgroundColor: '#fff',
   });
   keySec.appendChild(pubInput);
 
@@ -1628,9 +1624,10 @@ export async function main(): Promise<void> {
     padding: '10px',
     fontFamily: 'Arial, sans-serif',
     fontSize: '14px',
-    border: '1px solid #ccc',
+    border: '1px solid #ddd',
     borderRadius: '4px',
     resize: 'vertical',
+    backgroundColor: '#fff',
   });
   opSec.appendChild(inputmsg);
 
@@ -1643,38 +1640,36 @@ export async function main(): Promise<void> {
   });
   opSec.appendChild(btnGrid);
 
-  const createButton = (text: string, color: string): HTMLButtonElement => {
+  const createButton = (text: string, bgColor: string, textColor: string = '#333'): HTMLButtonElement => {
     const btn = document.createElement('button');
     btn.textContent = text;
     Object.assign(btn.style, {
       padding: '12px 20px',
       fontSize: '14px',
       cursor: 'pointer',
-      backgroundColor: color,
-      color: 'white',
-      border: 'none',
+      backgroundColor: bgColor,
+      color: textColor,
+      border: bgColor === '#fff' ? '1px solid #ddd' : 'none',
       borderRadius: '4px',
-      fontWeight: 'bold',
+      fontWeight: '500',
       transition: 'all 0.2s',
     });
     btn.onmouseover = () => {
-      btn.style.opacity = '0.8';
-      btn.style.transform = 'translateY(-1px)';
+      btn.style.opacity = '0.85';
     };
     btn.onmouseout = () => {
       btn.style.opacity = '1';
-      btn.style.transform = 'translateY(0)';
     };
     return btn;
   };
 
   const btns = {
-    sign: createButton('署名する', '#2196F3'),
-    verify: createButton('検証する', '#4CAF50'),
-    enc: createButton('暗号化する', '#FF9800'),
-    dec: createButton('復号化する', '#9C27B0'),
-    copy: createButton('結果をコピー', '#00BCD4'),
-    clear: createButton('入力を削除', '#F44336'),
+    sign: createButton('署名する', '#fff'),
+    verify: createButton('検証する', '#fff'),
+    enc: createButton('暗号化する', '#fff'),
+    dec: createButton('復号化する', '#fff'),
+    copy: createButton('結果をコピー', '#2196F3', '#fff'),
+    clear: createButton('入力を削除', '#f44336', '#fff'),
   };
 
   btns.copy.style.gridColumn = 'span 2';
@@ -1686,19 +1681,20 @@ export async function main(): Promise<void> {
 
   const resultArea = document.createElement('pre');
   Object.assign(resultArea.style, {
-    background: '#f9f9f9',
+    background: '#fafafa',
     padding: '15px',
     marginTop: '15px',
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-all',
     minHeight: '100px',
-    border: '1px solid #ddd',
+    border: '1px solid #e0e0e0',
     borderRadius: '4px',
     fontFamily: 'monospace',
     fontSize: '13px',
     lineHeight: '1.5',
     maxHeight: '400px',
     overflowY: 'auto',
+    color: '#333',
   });
   opSec.appendChild(resultArea);
 
@@ -1813,11 +1809,12 @@ export async function main(): Promise<void> {
       try {
         await navigator.clipboard.writeText(text);
         const originalText = btns.copy.textContent;
+        const originalBg = btns.copy.style.backgroundColor;
         btns.copy.textContent = '✅ コピーしました！';
         btns.copy.style.backgroundColor = '#4CAF50';
         setTimeout(() => {
           btns.copy.textContent = originalText;
-          btns.copy.style.backgroundColor = '#00BCD4';
+          btns.copy.style.backgroundColor = originalBg;
         }, 2000);
       } catch (e) {
         alert('クリップボードへのコピーに失敗しました。');
@@ -1855,19 +1852,19 @@ export async function main(): Promise<void> {
     padding: '10px 20px',
     fontSize: '14px',
     cursor: 'pointer',
-    backgroundColor: '#607D8B',
-    color: 'white',
-    border: 'none',
+    backgroundColor: '#fff',
+    color: '#333',
+    border: '1px solid #ddd',
     borderRadius: '4px',
-    fontWeight: 'bold',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+    fontWeight: '500',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
     zIndex: '1000',
   });
   modeBtn.onmouseover = () => {
-    modeBtn.style.backgroundColor = '#546E7A';
+    modeBtn.style.backgroundColor = '#f8f8f8';
   };
   modeBtn.onmouseout = () => {
-    modeBtn.style.backgroundColor = '#607D8B';
+    modeBtn.style.backgroundColor = '#fff';
   };
   modeBtn.onclick = (): void => {
     const url = new URL(window.location.href);
