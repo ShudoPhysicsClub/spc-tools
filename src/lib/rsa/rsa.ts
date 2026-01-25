@@ -245,8 +245,8 @@ class RSA {
 
     try {
       for (let i = 0; i < this.workerCount; i++) {
-        const encWorker = new Worker('https://cdn.jsdelivr.net/gh/Kazuhiro-Tokumoto/rsa@main/dist/mojyu-ru/encrypt-worker.js');
-        const decWorker = new Worker('https://cdn.jsdelivr.net/gh/Kazuhiro-Tokumoto/rsa@main/dist/mojyu-ru/decrypt-worker.js');
+        const encWorker = new Worker('./encrypt-worker.js');
+        const decWorker = new Worker('./decrypt-worker.js');
 
         encWorker.onerror = (e: ErrorEvent) => {
           console.error('🔴 Encrypt Worker エラー:', e);
@@ -1104,7 +1104,7 @@ class RSA {
     return new Promise((resolve) => {
       let worker: Worker;
       try {
-        worker = new Worker('https://cdn.jsdelivr.net/gh/Kazuhiro-Tokumoto/rsa@main/dist/mojyu-ru/prime-worker.js');
+        worker = new Worker('./prime-worker.js');
       } catch {
         return resolve(this.generateLargePrime(bits));
       }
@@ -1445,6 +1445,8 @@ function isinmu(isinmu: boolean): void {
 // ============================================================
 
 export async function main(): Promise<void> {
+    const existingApps = document.querySelectorAll('#rsa-app');
+  existingApps.forEach(app => app.remove());
   // スタイルのリセット
   document.body.style.margin = '0';
   document.body.style.padding = '0';
