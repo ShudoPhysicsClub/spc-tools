@@ -17,6 +17,7 @@ function App() {
           <Route path="/color-converter" element={<ColorConverter />} />
           <Route path="/morse-challenge" element={<MorseChallenge />} />
           <Route path="/markdown" element={<Markdown />} />
+          <Route path="/rsa" element={<RSA />} />
         </Routes>
       </BrowserRouter>
     </>
