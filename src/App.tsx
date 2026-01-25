@@ -5,6 +5,7 @@ import Random from "./pages/Random";
 import ColorConverter from "./pages/ColorConverter";
 import MorseChallenge from "./pages/MorseChallenge";
 import Markdown from "./pages/Markdown";
+import RSA from "./pages/rsa";
 
 function App() {
   return (
