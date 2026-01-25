@@ -245,8 +245,8 @@ class RSA {
 
     try {
       for (let i = 0; i < this.workerCount; i++) {
-        const encWorker = new Worker('/src/lib/rsa/encrypt-worker.js');
-        const decWorker = new Worker('/src/lib/rsa/decrypt-worker.js');
+        const encWorker = new Worker('/dist/lib/rsa/encrypt-worker.js');
+        const decWorker = new Worker('/dist/lib/rsa/decrypt-worker.js');
 
         encWorker.onerror = (e: ErrorEvent) => {
           console.error('🔴 Encrypt Worker エラー:', e);
@@ -1104,7 +1104,7 @@ class RSA {
     return new Promise((resolve) => {
       let worker: Worker;
       try {
-        worker = new Worker('/src/lib/rsa/prime-worker.js');
+        worker = new Worker('/dist/lib/rsa/prime-worker.js');
       } catch {
         return resolve(this.generateLargePrime(bits));
       }
