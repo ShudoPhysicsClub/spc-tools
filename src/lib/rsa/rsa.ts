@@ -1447,7 +1447,16 @@ function isinmu(isinmu: boolean): void {
 // メイン関数
 // ============================================================
 
+// ============================================================
+// メイン関数
+// ============================================================
+
 export async function main(): Promise<void> {
+  // スタイルのリセット
+  document.body.style.margin = '0';
+  document.body.style.padding = '0';
+  document.body.style.backgroundColor = '#f5f5f5';
+
   const bgDiv = document.createElement('div');
   const bgAudio = document.createElement('audio');
   document.body.appendChild(bgAudio);
@@ -1470,24 +1479,30 @@ export async function main(): Promise<void> {
   const mainContainer = document.createElement('div');
   Object.assign(mainContainer.style, {
     maxWidth: '800px',
-    margin: '0 auto',
+    margin: '20px auto',
     padding: '20px',
-    fontFamily: 'sans-serif',
+    fontFamily: 'Arial, sans-serif',
   });
   document.body.appendChild(mainContainer);
 
   function createSection(name: string): HTMLDivElement {
     const sec = document.createElement('div');
     Object.assign(sec.style, {
-      border: '1px solid #ddd',
+      border: '2px solid #333',
       borderRadius: '8px',
-      padding: '15px',
+      padding: '20px',
       marginBottom: '20px',
       background: '#fff',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
     });
     const h3 = document.createElement('h3');
     h3.textContent = name;
-    h3.style.marginTop = '0';
+    Object.assign(h3.style, {
+      marginTop: '0',
+      marginBottom: '15px',
+      fontSize: '20px',
+      color: '#333',
+    });
     sec.appendChild(h3);
     mainContainer.appendChild(sec);
     return sec;
@@ -1496,20 +1511,51 @@ export async function main(): Promise<void> {
   const keySec = createSection('鍵管理 (RSA)');
   const genBtn = document.createElement('button');
   genBtn.textContent = '✨ 新しい鍵ペアを生成してセット';
-  genBtn.style.marginBottom = '10px';
+  Object.assign(genBtn.style, {
+    marginBottom: '10px',
+    padding: '10px 20px',
+    fontSize: '14px',
+    cursor: 'pointer',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    fontWeight: 'bold',
+  });
+  genBtn.onmouseover = () => {
+    genBtn.style.backgroundColor = '#45a049';
+  };
+  genBtn.onmouseout = () => {
+    genBtn.style.backgroundColor = '#4CAF50';
+  };
   keySec.appendChild(genBtn);
 
   const pemInput = document.createElement('textarea');
   pemInput.placeholder = '秘密鍵 (PEM形式)';
-  Object.assign(pemInput.style, { width: '100%', height: '150px' });
+  Object.assign(pemInput.style, {
+    width: 'calc(100% - 20px)',
+    height: '150px',
+    padding: '10px',
+    fontFamily: 'monospace',
+    fontSize: '12px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    resize: 'vertical',
+  });
   keySec.appendChild(pemInput);
 
   const pubInput = document.createElement('textarea');
   pubInput.placeholder = '公開鍵 (PEM形式)';
   Object.assign(pubInput.style, {
-    width: '100%',
+    width: 'calc(100% - 20px)',
     height: '150px',
     marginTop: '10px',
+    padding: '10px',
+    fontFamily: 'monospace',
+    fontSize: '12px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    resize: 'vertical',
   });
   keySec.appendChild(pubInput);
 
@@ -1561,12 +1607,14 @@ export async function main(): Promise<void> {
 
   genBtn.onclick = async (): Promise<void> => {
     genBtn.textContent = '鍵ペアを生成中...';
+    genBtn.disabled = true;
     await new Promise((r) => setTimeout(r, 100));
     console.time('keygen');
     const keys = await cryptos.generateRSAKeyPair(4096);
     pemInput.value = cryptos.exportToPem(keys.n, keys.e, keys.d, keys.p, keys.q);
     updateKeys();
     genBtn.textContent = '✨ 新しい鍵ペアを生成してセット';
+    genBtn.disabled = false;
     console.timeEnd('keygen');
     alert('鍵が完成しました');
   };
@@ -1574,7 +1622,16 @@ export async function main(): Promise<void> {
   const opSec = createSection('操作 (署名・検証・暗号・復号)');
   const inputmsg = document.createElement('textarea');
   inputmsg.placeholder = '処理するメッセージを入力してください';
-  Object.assign(inputmsg.style, { width: '100%', height: '60px' });
+  Object.assign(inputmsg.style, {
+    width: 'calc(100% - 20px)',
+    height: '80px',
+    padding: '10px',
+    fontFamily: 'Arial, sans-serif',
+    fontSize: '14px',
+    border: '1px solid #ccc',
+    borderRadius: '4px',
+    resize: 'vertical',
+  });
   opSec.appendChild(inputmsg);
 
   const btnGrid = document.createElement('div');
@@ -1582,26 +1639,43 @@ export async function main(): Promise<void> {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: '10px',
-    marginTop: '10px',
+    marginTop: '15px',
   });
   opSec.appendChild(btnGrid);
 
-  const btns = {
-    sign: document.createElement('button'),
-    verify: document.createElement('button'),
-    enc: document.createElement('button'),
-    dec: document.createElement('button'),
-    copy: document.createElement('button'),
-    clear: document.createElement('button'),
+  const createButton = (text: string, color: string): HTMLButtonElement => {
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    Object.assign(btn.style, {
+      padding: '12px 20px',
+      fontSize: '14px',
+      cursor: 'pointer',
+      backgroundColor: color,
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      fontWeight: 'bold',
+      transition: 'all 0.2s',
+    });
+    btn.onmouseover = () => {
+      btn.style.opacity = '0.8';
+      btn.style.transform = 'translateY(-1px)';
+    };
+    btn.onmouseout = () => {
+      btn.style.opacity = '1';
+      btn.style.transform = 'translateY(0)';
+    };
+    return btn;
   };
-  btns.sign.textContent = '署名する';
-  btns.verify.textContent = '検証する';
-  btns.enc.textContent = '暗号化する';
-  btns.dec.textContent = '復号化する';
-  btns.copy.textContent = '結果をコピー';
-  btns.copy.style.color = 'blue';
-  btns.clear.textContent = '入力を削除';
-  btns.clear.style.color = 'red';
+
+  const btns = {
+    sign: createButton('署名する', '#2196F3'),
+    verify: createButton('検証する', '#4CAF50'),
+    enc: createButton('暗号化する', '#FF9800'),
+    dec: createButton('復号化する', '#9C27B0'),
+    copy: createButton('結果をコピー', '#00BCD4'),
+    clear: createButton('入力を削除', '#F44336'),
+  };
 
   btns.copy.style.gridColumn = 'span 2';
   btns.clear.style.gridColumn = 'span 2';
@@ -1612,13 +1686,19 @@ export async function main(): Promise<void> {
 
   const resultArea = document.createElement('pre');
   Object.assign(resultArea.style, {
-    background: '#f4f4f4',
+    background: '#f9f9f9',
     padding: '15px',
-    marginTop: '20px',
+    marginTop: '15px',
     whiteSpace: 'pre-wrap',
     wordBreak: 'break-all',
     minHeight: '100px',
-    border: '1px solid #ccc',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    fontFamily: 'monospace',
+    fontSize: '13px',
+    lineHeight: '1.5',
+    maxHeight: '400px',
+    overflowY: 'auto',
   });
   opSec.appendChild(resultArea);
 
@@ -1627,16 +1707,25 @@ export async function main(): Promise<void> {
       alert('秘密鍵が設定されていません。');
       return;
     }
+    btns.sign.disabled = true;
+    btns.sign.textContent = '署名中...';
     console.time('sign');
-    const sig = await cryptos.signStringToBase64(
-      inputmsg.value,
-      parsedKeysa.d,
-      parsedKeysa.p,
-      parsedKeysa.q,
-      parsedKeysa.n
-    );
-    console.timeEnd('sign');
-    resultArea.textContent = `【署名結果】\n${sig}`;
+    try {
+      const sig = await cryptos.signStringToBase64(
+        inputmsg.value,
+        parsedKeysa.d,
+        parsedKeysa.p,
+        parsedKeysa.q,
+        parsedKeysa.n
+      );
+      console.timeEnd('sign');
+      resultArea.textContent = `【署名結果】\n${sig}`;
+    } catch (e) {
+      alert('署名に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      btns.sign.disabled = false;
+      btns.sign.textContent = '署名する';
+    }
   };
 
   btns.verify.onclick = async (): Promise<void> => {
@@ -1646,17 +1735,26 @@ export async function main(): Promise<void> {
       alert('公開鍵が設定されていません。');
       return;
     }
+    btns.verify.disabled = true;
+    btns.verify.textContent = '検証中...';
     console.time('verify');
-    const ok = await cryptos.verifyBase64Signature(
-      inputmsg.value,
-      sig,
-      parsedPubKeys.e,
-      parsedPubKeys.n
-    );
-    console.timeEnd('verify');
-    resultArea.textContent = ok
-      ? '✅ 検証に成功しました。正当な署名です。'
-      : '❌ 検証に失敗しました。不正な署名です。';
+    try {
+      const ok = await cryptos.verifyBase64Signature(
+        inputmsg.value,
+        sig,
+        parsedPubKeys.e,
+        parsedPubKeys.n
+      );
+      console.timeEnd('verify');
+      resultArea.textContent = ok
+        ? '✅ 検証に成功しました。正当な署名です。'
+        : '❌ 検証に失敗しました。不正な署名です。';
+    } catch (e) {
+      alert('検証に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      btns.verify.disabled = false;
+      btns.verify.textContent = '検証する';
+    }
   };
 
   btns.enc.onclick = async (): Promise<void> => {
@@ -1664,14 +1762,23 @@ export async function main(): Promise<void> {
       alert('公開鍵が設定されていません。');
       return;
     }
+    btns.enc.disabled = true;
+    btns.enc.textContent = '暗号化中...';
     console.time('encrypt');
-    const enc = await cryptos.encryptStringToBase64(
-      inputmsg.value,
-      parsedPubKeys.e,
-      parsedPubKeys.n
-    );
-    console.timeEnd('encrypt');
-    resultArea.textContent = `【暗号化データ】\n${enc}`;
+    try {
+      const enc = await cryptos.encryptStringToBase64(
+        inputmsg.value,
+        parsedPubKeys.e,
+        parsedPubKeys.n
+      );
+      console.timeEnd('encrypt');
+      resultArea.textContent = `【暗号化データ】\n${enc}`;
+    } catch (e) {
+      alert('暗号化に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      btns.enc.disabled = false;
+      btns.enc.textContent = '暗号化する';
+    }
   };
 
   btns.dec.onclick = async (): Promise<void> => {
@@ -1679,31 +1786,52 @@ export async function main(): Promise<void> {
       alert('秘密鍵が設定されていません。');
       return;
     }
+    btns.dec.disabled = true;
+    btns.dec.textContent = '復号中...';
     console.time('decrypt');
-    const dec = await cryptos.decryptBase64ToString(
-      inputmsg.value,
-      parsedKeysa.d,
-      parsedKeysa.p,
-      parsedKeysa.q,
-      parsedKeysa.n
-    );
-    console.timeEnd('decrypt');
-    resultArea.textContent = `【復号結果】\n${dec}`;
+    try {
+      const dec = await cryptos.decryptBase64ToString(
+        inputmsg.value,
+        parsedKeysa.d,
+        parsedKeysa.p,
+        parsedKeysa.q,
+        parsedKeysa.n
+      );
+      console.timeEnd('decrypt');
+      resultArea.textContent = `【復号結果】\n${dec}`;
+    } catch (e) {
+      alert('復号に失敗しました: ' + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      btns.dec.disabled = false;
+      btns.dec.textContent = '復号化する';
+    }
   };
 
   btns.copy.onclick = async (): Promise<void> => {
     const text = resultArea.textContent?.split('\n').slice(1).join('\n') || '';
     if (text) {
-      await navigator.clipboard.writeText(text);
-      alert('クリップボードにコピーしました。');
+      try {
+        await navigator.clipboard.writeText(text);
+        const originalText = btns.copy.textContent;
+        btns.copy.textContent = '✅ コピーしました！';
+        btns.copy.style.backgroundColor = '#4CAF50';
+        setTimeout(() => {
+          btns.copy.textContent = originalText;
+          btns.copy.style.backgroundColor = '#00BCD4';
+        }, 2000);
+      } catch (e) {
+        alert('クリップボードへのコピーに失敗しました。');
+      }
     } else {
       alert('コピーする内容がありません。');
     }
   };
 
   btns.clear.onclick = (): void => {
-    inputmsg.value = '';
-    resultArea.textContent = '';
+    if (confirm('入力内容と結果をクリアしますか？')) {
+      inputmsg.value = '';
+      resultArea.textContent = '';
+    }
   };
 
   const privkeyParam = urlParams.get('privkey');
@@ -1724,7 +1852,23 @@ export async function main(): Promise<void> {
     position: 'fixed',
     bottom: '20px',
     right: '20px',
+    padding: '10px 20px',
+    fontSize: '14px',
+    cursor: 'pointer',
+    backgroundColor: '#607D8B',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    fontWeight: 'bold',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+    zIndex: '1000',
   });
+  modeBtn.onmouseover = () => {
+    modeBtn.style.backgroundColor = '#546E7A';
+  };
+  modeBtn.onmouseout = () => {
+    modeBtn.style.backgroundColor = '#607D8B';
+  };
   modeBtn.onclick = (): void => {
     const url = new URL(window.location.href);
     if (parsedKeysa) url.searchParams.set('privkey', btoa(pemInput.value));
