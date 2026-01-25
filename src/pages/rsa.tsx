@@ -1,9 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Header from '../components/Header';
 
 const RSA = () => {
+  const initialized = useRef(false);
+
   useEffect(() => {
-    // あなたの rsa.ts の main() を呼ぶ
+    // 既に初期化済みならスキップ
+    if (initialized.current) return;
+    
+    initialized.current = true;
+    
     import('../lib/rsa/rsa').then(module => {
       module.main();
     });
