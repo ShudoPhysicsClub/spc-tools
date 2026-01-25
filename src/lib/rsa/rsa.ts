@@ -2903,7 +2903,7 @@ const inmuData = [
   "レビュー", "review", "評価", "rating", "口コミ", "評判", "reputation",
 ];
 
-export async function RSAtool() {
+export async function main() {
   // --- 1. 演出用レイヤーの設定 ---
   const bgDiv = document.createElement("div");
   const bgAudio = document.createElement("audio");
