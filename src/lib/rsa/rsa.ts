@@ -1411,31 +1411,6 @@ class RSA {
   }
 }
 
-// ============================================================
-// UI関数
-// ============================================================
-
-function isinmu(isinmu: boolean): void {
-  if (isinmu) {
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.href = 'https://kazuhiro-tokumoto.github.io/rsa/img/yaju.jpg';
-    link.type = 'image/jpeg';
-    document.head.appendChild(link);
-    const title = document.createElement('title');
-    title.textContent = 'イ ン ム 暗 号 化 デ モ';
-    document.head.appendChild(title);
-  } else {
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.href = 'https://kazuhiro-tokumoto.github.io/rsa/img/rsa_icon.png';
-    link.type = 'image/png';
-    document.head.appendChild(link);
-    const title = document.createElement('title');
-    title.textContent = '教科書的RSA暗号化デモ';
-    document.head.appendChild(title);
-  }
-}
 
 // ============================================================
 // メイン関数
@@ -1675,10 +1650,8 @@ export async function main(): Promise<void> {
   keySec.appendChild(pubInput);
 
   const urlParams = new URLSearchParams(window.location.search);
-  const isinmumode = urlParams.get('type') === 'inmu';
   const currentUrl = new URL(window.location.href);
   const cryptos = new RSA();
-  isinmu(isinmumode);
 
   try {
     await cryptos.initAsync(
@@ -1959,60 +1932,6 @@ export async function main(): Promise<void> {
     } catch (e) {
       console.error(e);
     }
-  }
-
-  const modeBtn = document.createElement('button');
-  modeBtn.textContent = isinmumode ? '通常モードへ' : '特別モードへ';
-  Object.assign(modeBtn.style, {
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    padding: '10px 20px',
-    fontSize: '14px',
-    cursor: 'pointer',
-    backgroundColor: '#fff',
-    color: '#333',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    fontWeight: '500',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-    zIndex: '1000',
-  });
-  modeBtn.onmouseover = () => {
-    modeBtn.style.backgroundColor = '#f8f8f8';
-  };
-  modeBtn.onmouseout = () => {
-    modeBtn.style.backgroundColor = '#fff';
-  };
-  modeBtn.onclick = (): void => {
-    const url = new URL(window.location.href);
-    if (parsedKeysa) url.searchParams.set('privkey', btoa(pemInput.value));
-    if (isinmumode) {
-      url.searchParams.delete('type');
-    } else {
-      url.searchParams.set('type', 'inmu');
-    }
-    window.location.href = url.toString();
-  };
-
-  if (urlParams.get('mode') === 'switch') {
-    document.body.appendChild(modeBtn);
-  } else if (urlParams.get('mode') === '') {
-    currentUrl.searchParams.set('mode', 'switch');
-    window.location.href = currentUrl.toString();
-  } else if (urlParams.get('mode') !== null) {
-    currentUrl.searchParams.set('roop', 'true');
-    window.location.href = currentUrl.toString();
-  }
-
-  if (urlParams.get('roop') === 'true') {
-    showToast('不正な操作が検出されました', 'error');
-    for (let i = 0; i < 1000; i++) {
-      console.log('System loop...');
-    }
-    currentUrl.searchParams.delete('roop');
-    currentUrl.searchParams.set('mode', 'switch');
-    window.location.href = currentUrl.toString();
   }
 }
 
