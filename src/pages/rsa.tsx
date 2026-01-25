@@ -1,18 +1,23 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Header from '../components/Header';
 
 const RSA = () => {
-  const initialized = useRef(false);
-
   useEffect(() => {
-    // 既に初期化済みならスキップ
-    if (initialized.current) return;
-    
-    initialized.current = true;
+    let cleanup: (() => void) | undefined;
     
     import('../lib/rsa/rsa').then(module => {
       module.main();
+      
+      // クリーンアップ関数（コンポーネントがアンマウントされたら削除）
+      cleanup = () => {
+        // RSAtool で追加した要素を削除
+        document.querySelector('#rsa-app')?.remove();
+      };
     });
+    
+    return () => {
+      cleanup?.();
+    };
   }, []);
 
   return (
