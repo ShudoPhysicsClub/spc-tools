@@ -3,20 +3,16 @@ import Header from '../components/Header';
 
 const RSA = () => {
   useEffect(() => {
-    let cleanup: (() => void) | undefined;
+    // 既存の全要素を削除
+    document.querySelectorAll('#rsa-app').forEach(el => el.remove());
     
     import('../lib/rsa/rsa').then(module => {
       module.main();
-      
-      // クリーンアップ関数（コンポーネントがアンマウントされたら削除）
-      cleanup = () => {
-        // RSAtool で追加した要素を削除
-        document.querySelector('#rsa-app')?.remove();
-      };
     });
     
     return () => {
-      cleanup?.();
+      // アンマウント時に削除
+      document.querySelectorAll('#rsa-app').forEach(el => el.remove());
     };
   }, []);
 
