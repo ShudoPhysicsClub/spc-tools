@@ -2954,7 +2954,7 @@ const inmuData = [
   "レビュー", "review", "評価", "rating", "口コミ", "評判", "reputation",
 ];
 
-async function main() {
+export async function RSAtool() {
     const header = createHeader("RSA暗号", "", true);
   document.body.insertBefore(header, document.body.firstChild);
   // --- 1. 演出用レイヤーの設定 ---
