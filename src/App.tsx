@@ -5,6 +5,7 @@ import Random from "./pages/Random";
 import ColorConverter from "./pages/ColorConverter";
 import MorseChallenge from "./pages/MorseChallenge";
 import Markdown from "./pages/Markdown";
+import RSA from "./pages/rsa";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/color-converter" element={<ColorConverter />} />
           <Route path="/morse-challenge" element={<MorseChallenge />} />
           <Route path="/markdown" element={<Markdown />} />
+          <Route path="/rsa" element={<RSA />} />
         </Routes>
       </BrowserRouter>
     </>

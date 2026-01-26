@@ -39,6 +39,11 @@ const Index = () => {
             onClick={() => navigate("/markdown")}
             text={"マークダウンエディタ"}
           />
+          <Button
+            className="text-2xl m-[5px] border-black border-[1px] cursor-pointer"
+            onClick={() => navigate("/rsa")}
+            text={"RSAツール"}
+          />
         </div>
       </div>
     </>
